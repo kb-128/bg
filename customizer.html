@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surprise Gift Customizer | OurMoments Clone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Shantell+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff4b72;
+      --primary-hover: #ff2a58;
+      --primary-glow: rgba(255, 75, 114, 0.35);
+      --accent: #ffd166;
+      --bg-dark: #0f0a1c;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --text-main: #f0f0f5;
+      --text-muted: #9f9fb5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 75, 114, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 209, 102, 0.05) 0%, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(255, 75, 114, 0.15);
+      border: 1px solid rgba(255, 75, 114, 0.3);
+      border-radius: 999px;
+      color: #ff8da1;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #ffc2cd 50%, #ffd166 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.3s;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      color: #ffffff;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      color: #fff;
+      transition: all 0.25s ease;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 140px;
+      line-height: 1.6;
+    }
+
+    .reasons-list, .photos-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .item-num {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, #8a2be2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .photo-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .photo-thumb-container {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #1e1e2f;
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .photo-thumb-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .actions-bar {
+      position: sticky;
+      bottom: 24px;
+      background: rgba(15, 10, 28, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      padding: 18px 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #ff758c 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #ff8da1;
+      border: 1px solid rgba(255, 75, 114, 0.3);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 75, 114, 0.1);
+    }
+
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: #10b981;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 999999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .actions-bar .btn {
+        justify-content: center;
+      }
+      .photo-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">✨ Surprise Studio</div>
+      <h1>Personalize Your Surprise</h1>
+      <p class="subtitle">Customize the birthday person's name, age, reasons, memories, photo cards, and heartfelt letter. Your changes update the website instantly!</p>
+    </header>
+
+    <!-- Basic Info -->
+    <div class="glass-card">
+      <div class="card-title">
+        <span>👤</span> Essential Details
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="recipient-name">Birthday Person's Name</label>
+          <input type="text" id="recipient-name" placeholder="e.g. Divya">
+        </div>
+        <div class="form-group">
+          <label for="sender-name">Your Name (Sender)</label>
+          <input type="text" id="sender-name" placeholder="e.g. Dhruv">
+        </div>
+        <div class="form-group">
+          <label for="recipient-age">Turning Age</label>
+          <input type="number" id="recipient-age" placeholder="e.g. 20">
+        </div>
+        <div class="form-group">
+          <label for="birth-date">Birth Date Code (MMDD)</label>
+          <input type="text" id="birth-date" placeholder="e.g. 1228">
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Reasons (Balloons) -->
+    <div class="glass-card">
+      <div class="card-title">
+        <span>🎈</span> 5 Reasons (Revealed when popping balloons)
+      </div>
+      <div class="reasons-list">
+        <div class="item-row">
+          <div class="item-num">1</div>
+          <input type="text" id="reason-0" placeholder="Reason 1">
+        </div>
+        <div class="item-row">
+          <div class="item-num">2</div>
+          <input type="text" id="reason-1" placeholder="Reason 2">
+        </div>
+        <div class="item-row">
+          <div class="item-num">3</div>
+          <input type="text" id="reason-2" placeholder="Reason 3">
+        </div>
+        <div class="item-row">
+          <div class="item-num">4</div>
+          <input type="text" id="reason-3" placeholder="Reason 4">
+        </div>
+        <div class="item-row">
+          <div class="item-num">5</div>
+          <input type="text" id="reason-4" placeholder="Reason 5">
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Photos & Captions -->
+    <div class="glass-card">
+      <div class="card-title">
+        <span>📸</span> 5 Photos & Captions (Memory Lane Polaroid Slideshow)
+      </div>
+      <div class="photos-list" id="photos-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- Letter Message -->
+    <div class="glass-card">
+      <div class="card-title">
+        <span>💌</span> Wax-Sealed Letter Message
+      </div>
+      <div class="form-group">
+        <label for="letter-msg">Personal Letter Content</label>
+        <textarea id="letter-msg" rows="10" placeholder="Write your heartfelt letter here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Sticky Actions Bar -->
+    <div class="actions-bar">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-outline" id="btn-reset">🔄 Reset to Divya & Dhruv</button>
+        <button class="btn btn-secondary" id="btn-download">💾 Download config.js</button>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-primary" id="btn-save-launch">🚀 Launch My Surprise!</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Changes saved! Launching surprise...</div>
+
+  <script src="config.js"></script>
+  <script>
+    // Load current config or localStorage
+    let currentData = JSON.parse(JSON.stringify(window.OM_BIRTHDAY_DATA));
+
+    // Elements
+    const elRecipient = document.getElementById('recipient-name');
+    const elSender = document.getElementById('sender-name');
+    const elAge = document.getElementById('recipient-age');
+    const elBirthDate = document.getElementById('birth-date');
+    const elLetter = document.getElementById('letter-msg');
+    const photosContainer = document.getElementById('photos-container');
+    const toast = document.getElementById('toast');
+
+    function showToast(msg) {
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function renderFields() {
+      elRecipient.value = currentData.n || '';
+      elSender.value = currentData.f || '';
+      elAge.value = currentData.a || '';
+      elBirthDate.value = currentData.b || '';
+      elLetter.value = currentData.m || '';
+
+      // Reasons
+      for (let i = 0; i < 5; i++) {
+        const rEl = document.getElementById(`reason-${i}`);
+        if (rEl) rEl.value = (currentData.rs && currentData.rs[i]) || '';
+      }
+
+      // Photos
+      photosContainer.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        const photoPath = (currentData.p && currentData.p[i]) || `assets/photo_${i+1}.jpg`;
+        const caption = (currentData.c && currentData.c[i]) || '';
+
+        const row = document.createElement('div');
+        row.className = 'photo-row';
+        row.innerHTML = `
+          <div class="photo-thumb-container" onclick="document.getElementById('file-${i}').click()" title="Click to upload your image">
+            <img src="${photoPath}" id="img-preview-${i}" alt="Photo ${i+1}">
+            <input type="file" id="file-${i}" accept="image/*" style="display:none" onchange="handlePhotoUpload(${i}, this)">
+          </div>
+          <div class="photo-inputs">
+            <input type="text" id="photo-path-${i}" value="${photoPath}" placeholder="Path or Image URL (e.g. assets/photo_${i+1}.jpg)" oninput="updatePhotoPath(${i}, this.value)">
+            <input type="text" id="photo-caption-${i}" value="${caption.replace(/"/g, '&quot;')}" placeholder="Caption for Polaroid ${i+1}">
+          </div>
+        `;
+        photosContainer.appendChild(row);
+      }
+    }
+
+    window.updatePhotoPath = function(idx, val) {
+      currentData.p[idx] = val;
+      const preview = document.getElementById(`img-preview-${idx}`);
+      if (preview) preview.src = val;
+    };
+
+    window.handlePhotoUpload = function(idx, input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataUrl = e.target.result;
+          currentData.p[idx] = dataUrl;
+          document.getElementById(`photo-path-${idx}`).value = `Uploaded Photo ${idx+1}`;
+          document.getElementById(`img-preview-${idx}`).src = dataUrl;
+          showToast(`Photo ${idx+1} updated!`);
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    };
+
+    function collectData() {
+      currentData.n = elRecipient.value.trim() || 'My Love';
+      currentData.f = elSender.value.trim() || 'Someone who loves you';
+      currentData.a = parseInt(elAge.value) || 20;
+      currentData.b = elBirthDate.value.trim() || '1228';
+      currentData.m = elLetter.value;
+      currentData.ck = 'p';
+
+      currentData.rs = [];
+      for (let i = 0; i < 5; i++) {
+        const rEl = document.getElementById(`reason-${i}`);
+        currentData.rs.push(rEl ? rEl.value : `Reason ${i+1}`);
+      }
+
+      currentData.c = [];
+      for (let i = 0; i < 5; i++) {
+        const cEl = document.getElementById(`photo-caption-${i}`);
+        currentData.c.push(cEl ? cEl.value : `Memory ${i+1}`);
+      }
+
+      return currentData;
+    }
+
+    // Save & Launch
+    document.getElementById('btn-save-launch').addEventListener('click', () => {
+      const data = collectData();
+      try {
+        localStorage.setItem('OM_CUSTOM_BIRTHDAY_DATA', JSON.stringify(data));
+      } catch (e) {
+        console.warn('Storage limit reached, data might be large due to uploaded photos:', e);
+      }
+      showToast('Surprise ready! Launching...');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 800);
+    });
+
+    // Download config.js
+    document.getElementById('btn-download').addEventListener('click', () => {
+      const data = collectData();
+      const content = `// ============================================================
+// OUR MOMENTS - BIRTHDAY SURPRISE CONFIGURATION
+// Generated with Surprise Customizer
+// ============================================================
+
+window.OM_BIRTHDAY_DATA = ${JSON.stringify(data, null, 2)};
+
+try {
+  const savedData = localStorage.getItem('OM_CUSTOM_BIRTHDAY_DATA');
+  if (savedData) {
+    const parsed = JSON.parse(savedData);
+    if (parsed && parsed.n) {
+      window.OM_BIRTHDAY_DATA = parsed;
+    }
+  }
+} catch (e) {
+  console.log('Using default config data');
+}
+`;
+      const blob = new Blob([content], { type: 'application/javascript' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'config.js';
+      a.click();
+      showToast('config.js downloaded!');
+    });
+
+    // Reset to Original
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (confirm('Reset all values to the original Divya & Dhruv surprise?')) {
+        localStorage.removeItem('OM_CUSTOM_BIRTHDAY_DATA');
+        location.reload();
+      }
+    });
+
+    // Initialize
+    renderFields();
+  </script>
+</body>
+</html>
